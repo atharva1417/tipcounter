@@ -1,0 +1,84 @@
+package com.example.tipcalc;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    EditText etBillAmount;
+
+    TextView tvTipPercent;
+
+    TextView tvTipAmount;
+
+    TextView tvBillTotalAmount;
+    ImageButton good;
+    ImageButton excellent;
+    ImageButton bad;
+    float percentage = 0;
+    float tipTotal = 0;
+    float finalBillAmount = 0;
+    float totalBillAmount = 0;
+
+    float REGULAR_TIP_PERCENTAGE = 10;
+    float DEFAULT_TIP_PERCENTAGE = 15;
+    float EXCELLENT_TIP_PERCENTAGE = 20;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        //setTipValues();
+        good = findViewById(R.id.ibGoodService);
+        bad = findViewById(R.id.ibRegularService);
+        excellent = findViewById(R.id.ibExcellentService);
+        tvTipPercent = findViewById(R.id.tvTipPercent);
+        tvTipAmount = findViewById(R.id.tvTipAmount);
+        tvBillTotalAmount = findViewById(R.id.tvBillTotalAmount);
+        etBillAmount = findViewById(R.id.etBillAmount);
+
+        good.setOnClickListener(this);
+        bad.setOnClickListener(this);
+        excellent.setOnClickListener(this);
+
+    }
+
+
+
+    // @OnClick({R.id.ibRegularService, R.id.ibGoodService, R.id.ibExcellentService})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ibRegularService:
+                percentage = REGULAR_TIP_PERCENTAGE;
+                break;
+            case R.id.ibGoodService:
+                percentage = DEFAULT_TIP_PERCENTAGE;
+                break;
+            case R.id.ibExcellentService:
+                percentage = EXCELLENT_TIP_PERCENTAGE;
+                break;
+        }
+        if (percentage == 0)
+            percentage = DEFAULT_TIP_PERCENTAGE;
+
+        if (!etBillAmount.getText().toString().equals("") && !etBillAmount.getText().toString().equals("."))
+            totalBillAmount = Float.valueOf(etBillAmount.getText().toString());
+        else
+            totalBillAmount = 0;
+
+        tipTotal = (totalBillAmount * percentage) / 100;
+        finalBillAmount = totalBillAmount + tipTotal;
+        //tvTipPercent.setText(getString(R.string.tippercent, percentage));
+       // tvTipAmount.setText(getString(R.string.tiptotal, tipTotal));
+       // tvBillTotalAmount.setText(getString(R.string.billtotalresult, finalBillAmount));
+
+        tvTipPercent.setText(percentage+" %");
+        tvTipAmount.setText(getString(R.string.tiptotal, tipTotal));
+         tvBillTotalAmount.setText(getString(R.string.billtotalresult, finalBillAmount));
+
+    }
+}
